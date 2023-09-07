@@ -4,8 +4,6 @@ function HH_root(InData::ModelData, lambdain, sage = fag, z = 1)
   
   @unpack_ModelData InData;
   
-  #global lambdaz, pcz, Consz, ellz, dis_totz, yz, Az, Savz
-  
   # EULER EQUATION: solve forward in age
   lambdaz[sage,z]    = lambdain
   if sage < nag
@@ -30,7 +28,7 @@ function HH_root(InData::ModelData, lambdain, sage = fag, z = 1)
   
   if sage < nag
     for a in sage:(nag-1)
-      Az[a+1,z]   = (1+rz[a,z])*(Az[a,z]+yz[a,z]+ivz[a,z]+abz[a,z]-pcz[a,z]*Consz[a,z]) # if sage > 1 take previous age entry in Az as starting value! (i.e. has to be given globally not passed in function)
+      Az[a+1,z]   = (1+rz[a,z])*(Az[a,z]+yz[a,z]+ivz[a,z]+abz[a,z]-pcz[a,z]*Consz[a,z])
     end
   end
   Savz[sage:nag,z]  = Az[sage:nag,z].+yz[sage:nag,z].+ivz[sage:nag,z].+abz[sage:nag,z].-pcz[sage:nag,z].*Consz[sage:nag,z]
@@ -42,8 +40,6 @@ end
 function HH(InData::ModelData, sage = fag, z = 1, maxiter = 30, stol = 1e-10, atol = 0.1)
   
   @unpack_ModelData InData;
-  
-  #global HH_nonconvz
   
   lambdaz0 = 1.0 # initialization
   f0       = 1.0 # initialization
@@ -122,8 +118,6 @@ end
 function HHall(InData::ModelData, starttime = 1, calibinit = false, scaleA = 1)
   
   @unpack_ModelData InData;
-  
-  #global Az
   
   Threads.@threads for z in starttime:ncoh
     if z <= nag-fag+starttime-1

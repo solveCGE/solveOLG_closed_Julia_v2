@@ -1,7 +1,6 @@
 # computes demographic transition (and updates intervivo transfers accordingly)
 function compdemo(InData::ModelData)
   
-  #global Nv, Nz, N, Nc, ivv, ivz
   @unpack_ModelData InData;
   
   # compute demography transition
@@ -48,15 +47,6 @@ end
 # main routine that solves the transition path of the full model
 function solveOLG(InData::ModelData, starttime = 1, maxiter = 200, tol = 1e-4, damping_budget = 1.0, damping_assets = 1.0, damping_ab = 1.0, damping_r = 0.5, damping_new_assets = 0.7)
   
-  #=
-  global uck, K, Inv, qTob, Y, w, wz, V, TaxF, Div
-  global Cons, LS, A, ab, iv, Nw, Nr, P, tauW, TaxP, Taxl, Rev, CG, Exp, PB
-  global edy, edg, edl, eda, ediv, edab, edw
-  global HH_nonconvz
-  global tauWv, tauWz, tauF, tauC, tauCv, tauCz, taul, taulv, taulz, tauprof, cGv, CG
-  global r, rz, rv, abv, abz, LD
-  global Av, Consv, lambdav, Savv, dis_totv, ellv, ev, wv, pcv, yv 
-  =#
   @unpack_ModelData InData;
   
   println("\nRunning Tatonnement Algorithm for Transition:\n");
@@ -205,6 +195,6 @@ function solveOLG(InData::ModelData, starttime = 1, maxiter = 200, tol = 1e-4, d
   toc_loop = DateTime(now())
   dur_loop = toc_loop-tic_loop
   println("Computation time:\t", @sprintf("%.4f",dur_loop.value/1000), " sec")
-  println("CHECK SOLUTION:\t\t", @sprintf("%.16f",sum(abs.(edy).+abs.(edl).+abs.(edg).+abs.(eda).+abs.(ediv).+abs.(edab))))
+  println("CHECK SOLUTION:\t\t", @sprintf("%.16f",maximum(abs.(edy).+abs.(edl).+abs.(edg).+abs.(eda).+abs.(ediv).+abs.(edab))))
 
 end
